@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-website
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: simple-website
+  template:
+    metadata:
+      labels:
+        app: simple-website
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: website-volume
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: website-volume
+          emptyDir: {}
+
+---
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simple-website-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/enable-directory-listing: "true"
+spec:
+  defaultBackend:
+    service:
+      name: default-backend-service
+      port:
+        number: 80
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: default-backend-service
+                port:
+                  number: 80
+        
+
