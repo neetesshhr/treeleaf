@@ -4,3 +4,6 @@
 [submodule "treeleafjavaapi"]
 	path = treeleafjavaapi
 	url = https://github.com/neetesshhr/treeleafjavaapi
+[submodule "treeleafjanus"]
+	path = treeleafjanus
+	url = https://github.com/neetesshhr/treeleafjanus
